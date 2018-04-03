@@ -176,7 +176,7 @@ function DisplayWPAConfig(){
                     <h4>Client settings for interface <?php echo RASPI_WIFI_CLIENT_INTERFACE ?></h4>
 
                     <div class="btn-group btn-block">
-                        <a href=".?&lt;?php echo $_SERVER['QUERY_STRING']; ?&gt;" style="padding:10px;float: right;display: block;position: relative;margin-top: -55px;" class="col-md-2 btn btn-info" id="update">Rescan</a>
+                        <a href=".?<?php echo $_SERVER['QUERY_STRING']; ?>" style="padding:10px;float: right;display: block;position: relative;margin-top: -55px;" class="col-md-2 btn btn-info" id="update">Rescan</a>
                     </div>
 
                     <form method="post" action="?page=wpa_conf" id="wpa_conf_form">
@@ -200,21 +200,21 @@ function DisplayWPAConfig(){
                             <tr>
                                 <td><?php if ($network['configured']) { ?> <?php } ?> <?php if (array_key_exists('connected', $network) && $network['connected']) { ?> <?php } ?></td>
 
-                                <td><input type="hidden" name="ssid&lt;?php echo $index ?&gt;" value="<?php echo htmlentities($ssid) ?>"> <?php echo $ssid ?></td><?php if (array_key_exists('visible', $network) && $network['visible']) { ?>
+                                <td><input type="hidden" name="ssid<?php echo $index ?>" value="<?php echo htmlentities($ssid) ?>"> <?php echo $ssid ?></td><?php if (array_key_exists('visible', $network) && $network['visible']) { ?>
 
                                 <td><?php echo $network['channel'] ?></td><?php } else { ?>
 
                                 <td><span class="label label-warning">X</span></td><?php } ?>
 
-                                <td><?php if (array_key_exists('priority', $network)) { ?><input type="hidden" name="priority&lt;?php echo $index ?&gt;" value="<?php echo $network['priority'] ?>"> <?php } ?> <input type="hidden" name="protocol&lt;?php echo $index ?&gt;" value="<?php echo $network['protocol'] ?>"><?php echo $network['protocol'] ?></td><?php if ($network['protocol'] === 'Open') { ?>
+                                <td><?php if (array_key_exists('priority', $network)) { ?><input type="hidden" name="priority<?php echo $index ?>" value="<?php echo $network['priority'] ?>"> <?php } ?> <input type="hidden" name="protocol<?php echo $index ?>" value="<?php echo $network['protocol'] ?>"><?php echo $network['protocol'] ?></td><?php if ($network['protocol'] === 'Open') { ?>
 
-                                <td><input type="hidden" name="passphrase&lt;?php echo $index ?&gt;" value="">---</td><?php } else { ?>
+                                <td><input type="hidden" name="passphrase<?php echo $index ?>" value="">---</td><?php } else { ?>
 
-                                <td><input type="password" class="form-control" name="passphrase&lt;?php echo $index ?&gt;" value="<?php echo $network['passphrase'] ?>" onkeyup="CheckPSK(this, 'update&lt;?php echo $index?&gt;')"> <?php } ?></td>
+                                <td><input type="password" class="form-control" name="passphrase<?php echo $index ?>" value="<?php echo $network['passphrase'] ?>" onkeyup="CheckPSK(this, 'update<<?php echo $index ?>')"> <?php } ?></td>
 
                                 <td>
                                     <div class="btn-group btn-block">
-                                        <?php if ($network['configured']) { ?><input type="submit" class="col-md-6 btn btn-warning" value="Update" id="update&lt;?php echo $index ?&gt;" name="update&lt;?php echo $index ?&gt;" <?php echo ($network['protocol'] === 'Open' ? ' disabled' : '')?>> <?php } else { ?> <input type="submit" class="col-md-6 btn btn-info" value="Add" id="update&lt;?php echo $index ?&gt;" name="update&lt;?php echo $index ?&gt;" <?php echo ($network['protocol'] === 'Open' ? '' : ' disabled')?>> <?php } ?> <input type="submit" class="col-md-6 btn btn-danger" value="Delete" name="delete&lt;?php echo $index ?&gt;" <?php echo ($network['configured'] ? '' : ' disabled')?>>
+                                        <?php if ($network['configured']) { ?><input type="submit" class="col-md-6 btn btn-warning" value="Update" id="update<?php echo $index ?>" name="update<?php echo $index ?>" <?php echo ($network['protocol'] === 'Open' ? ' disabled' : '')?>> <?php } else { ?> <input type="submit" class="col-md-6 btn btn-info" value="Add" id="update<?php echo $index ?>" name="update<?php echo $index ?>" <?php echo ($network['protocol'] === 'Open' ? '' : ' disabled')?>> <?php } ?> <input type="submit" class="col-md-6 btn btn-danger" value="Delete" name="delete<?php echo $index ?>" <?php echo ($network['configured'] ? '' : ' disabled')?>>
                                     </div>
                                 </td>
                             </tr><?php $index += 1; ?><?php } ?>
