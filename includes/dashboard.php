@@ -253,7 +253,7 @@ function DisplayDashboard(){
                                     </div>
 
                                     <div class="progress">
-                                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $strLinkQuality ?>" aria-valuemin="0" aria-valuemax="100" style="width: &lt;?php echo $strLinkQuality ?&gt;%;">
+                                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $strLinkQuality ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $strLinkQuality ?>%;">
                                             <?php echo $strLinkQuality ?>%
                                         </div>
                                     </div>
