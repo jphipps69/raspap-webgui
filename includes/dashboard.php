@@ -81,10 +81,29 @@ function DisplayDashboard(){
               <div class="panel-body">
                 <p><?php $status->showMessages(); ?></p>
                   <div class="row">
+<!-- start of CLIENT -->
                         <div class="col-md-6">
                         <div class="panel panel-default">
                   <div class="panel-body">
-                      <h4>Interface Information</h4>
+                      <h4>Client Interface Information</h4>
+		      <div class="info-item">Interface Name</div> <?php echo RASPI_WIFI_CLIENT_INTERFACE ?></br>
+          <div class="info-item">IP Address</div>     <?php echo $strIPAddress ?></br>
+          <div class="info-item">Subnet Mask</div>    <?php echo $strNetMask ?></br>
+          <div class="info-item">Mac Address</div>    <?php echo $strHWAddress ?></br></br>
+
+                      <h4>Interface Statistics</h4>
+          <div class="info-item">Received Packets</div>    <?php echo $strRxPackets ?></br>
+          <div class="info-item">Received Bytes</div>      <?php echo $strRxBytes ?></br></br>
+          <div class="info-item">Transferred Packets</div> <?php echo $strTxPackets ?></br>
+          <div class="info-item">Transferred Bytes</div>   <?php echo $strTxBytes ?></br>
+        </div><!-- /.panel-body -->
+        </div><!-- /.panel-default -->
+                        </div><!-- /.col-md-6 -->
+<!-- start of AP -->
+                        <div class="col-md-6">
+                        <div class="panel panel-default">
+                  <div class="panel-body">
+                      <h4>AP Interface Information</h4>
 		      <div class="info-item">Interface Name</div> <?php echo RASPI_WIFI_CLIENT_INTERFACE ?></br>
           <div class="info-item">IP Address</div>     <?php echo $strIPAddress ?></br>
           <div class="info-item">Subnet Mask</div>    <?php echo $strNetMask ?></br>

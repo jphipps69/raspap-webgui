@@ -3,7 +3,8 @@
 define('RASPI_CONFIG', '/etc/raspap');
 define('RASPI_CONFIG_NETWORKING',RASPI_CONFIG.'/networking');
 define('RASPI_ADMIN_DETAILS', RASPI_CONFIG.'/raspap.auth');
-define('RASPI_WIFI_CLIENT_INTERFACE', 'wlan0');
+define('RASPI_WIFI_CLIENT_INTERFACE', 'wlan1');
+define('RASPI_WIFI_AP_INTERFACE', 'wlan0');
 
 // Constants for configuration file paths.
 // These are typical for default RPi installs. Modify if needed.
