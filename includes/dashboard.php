@@ -64,10 +64,10 @@ function DisplayDashboard(){
 	 *	Load Client Info
      */
      
-	exec( 'ip a s ' . RASPI_WIFI_AP_INTERFACE , $return );
-	exec( 'iwconfig ' . RASPI_WIFI_AP_INTERFACE, $return );
+	exec( 'ip a s ' . RASPI_WIFI_AP_INTERFACE , $return2 );
+	exec( 'iwconfig ' . RASPI_WIFI_AP_INTERFACE, $return2 );
 
-	$strWlan1 = implode( " ", $return );
+	$strWlan1 = implode( " ", $return2 );
 	$strWlan1 = preg_replace( '/\s\s+/', ' ', $strWlan1 );
 
 	// Parse results from ifconfig/iwconfig
