@@ -86,7 +86,7 @@ function DisplayDashboard(){
     
     if(strpos( $strWlan1, "UP" ) !== false) {
         $status->addMessage('AP Interface is up', 'success');
-        $wlan0up = true;
+        $wlan1up = true;
     } else {
         $status->addMessage('AP Interface is down', 'warning');
     }

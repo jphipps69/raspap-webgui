@@ -13,10 +13,12 @@ function DisplayWPAConfig(){
 
 	$network = null;
 	$ssid = null;
+        $networkid = 0;
 
 	foreach($known_return as $line) {
 		if (preg_match('/network\s*=/', $line)) {
-			$network = array('visible' => false, 'configured' => true, 'connected' => false);
+			$network = array('visible' => false, 'configured' => true, 'connected' => false, 'network_id' => $networkid);
+                        $networkid++;
 		} elseif ($network !== null) {
 			if (preg_match('/^\s*}\s*$/', $line)) {
 				$networks[$ssid] = $network;
@@ -49,7 +51,15 @@ function DisplayWPAConfig(){
 		}
 	}
 
+echo "<!-- before if -->";
 	if ( isset($_POST['client_settings']) && CSRFValidate() ) {
+                $current_network = "0";
+                if ( $_POST['network_connect']) {
+		   if (preg_match('/network(\d+)/', $_POST['network_connect'], $post_match)) {	
+			$current_network = $post_match[1];
+		   }
+                }
+
 		$tmp_networks = $networks;
 		if ($wpa_file = fopen('/tmp/wifidata', 'w')) {
 			fwrite($wpa_file, 'ctrl_interface=DIR=' . RASPI_WPA_CTRL_INTERFACE . ' GROUP=netdev' . PHP_EOL);
@@ -111,6 +121,10 @@ function DisplayWPAConfig(){
 					if ($reconfigure_return == 0) {
 						$status->addMessage('Wifi settings updated successfully', 'success');
 						$networks = $tmp_networks;
+					        exec('sudo wpa_cli select_network '.$current_network, $reconfigure_out, $reconfigure_return );
+					        if ($reconfigure_return == 0) {
+						    $status->addMessage('Wifi network '.$current_network.' selected successfully', 'success');
+                                                }
 					} else {
 						$status->addMessage('Wifi settings updated but cannot restart (cannon execute "wpa_cli reconfigure")', 'danger');
 					}
@@ -179,8 +193,8 @@ function DisplayWPAConfig(){
                         <a href=".?<?php echo $_SERVER['QUERY_STRING']; ?>" style="padding:10px;float: right;display: block;position: relative;margin-top: -55px;" class="col-md-2 btn btn-info" id="update">Rescan</a>
                     </div>
 
-                    <form method="post" action="?page=wpa_conf" id="wpa_conf_form">
-                        <?php CSRFToken() ?><input type="hidden" name="client_settings">
+                    <form method="post" action="?page=wpa_conf" id="wpa_conf_form" name="client">
+                        <?php CSRFToken() ?><input type="hidden" name="client_settings"><input type="hidden" id="network_connect" name="network_connect" value="">
 
                         <table class="table table-responsive table-striped">
                             <tr>
@@ -198,7 +212,14 @@ function DisplayWPAConfig(){
                             </tr><?php $index = 0; ?><?php foreach ($networks as $ssid => $network) { ?>
 
                             <tr>
-                                <td><?php if ($network['configured']) { ?> <?php } ?> <?php if (array_key_exists('connected', $network) && $network['connected']) { ?> <?php } ?></td>
+                                <td><?php 
+                                    if ($network['configured']) { 
+ 					if (array_key_exists('connected', $network) && $network['connected']) { ?>
+                                           <i class="fa fa-check-circle fa-fw"></i>
+                                    <?php } else { ?>
+                                           <i id="network<?php echo $network['network_id']; ?>" class="fa fa-check-circle fa-fw net-connect" style="cursor: pointer;"></i>
+				    <?php }} ?> 
+                                    <?php if (array_key_exists('connected', $network) && $network['connected']) { ?><i class="fa fa-exchange fa-fw"></i><?php } ?></td>
 
                                 <td><input type="hidden" name="ssid<?php echo $index ?>" value="<?php echo htmlentities($ssid) ?>"> <?php echo $ssid ?></td><?php if (array_key_exists('visible', $network) && $network['visible']) { ?>
 
@@ -214,7 +235,7 @@ function DisplayWPAConfig(){
 
                                 <td>
                                     <div class="btn-group btn-block">
-                                        <?php if ($network['configured']) { ?><input type="submit" class="col-md-6 btn btn-warning" value="Update" id="update<?php echo $index ?>" name="update<?php echo $index ?>" <?php echo ($network['protocol'] === 'Open' ? ' disabled' : '')?>> <?php } else { ?> <input type="submit" class="col-md-6 btn btn-info" value="Add" id="update<?php echo $index ?>" name="update<?php echo $index ?>" <?php echo ($network['protocol'] === 'Open' ? '' : ' disabled')?>> <?php } ?> <input type="submit" class="col-md-6 btn btn-danger" value="Delete" name="delete<?php echo $index ?>" <?php echo ($network['configured'] ? '' : ' disabled')?>>
+                                        <?php if ($network['configured']) { ?><input type="submit" class="col-md-6 btn btn-warning" value="Update" id="update<?php echo $index ?>" name="update<?php echo $index ?>" <?php echo ($network['protocol'] === 'Open' ? ' disabled' : '')?>> <?php } else { ?> <input type="submit" class="col-md-6 btn btn-info" value="Add" id="update<?php echo $index ?>" name="update<?php echo $index ?>" <?php echo ($network['protocol'] === 'Open' ? '' : '')?>> <?php } ?> <input type="submit" class="col-md-6 btn btn-danger" value="Delete" name="delete<?php echo $index ?>" <?php echo ($network['configured'] ? '' : ' disabled')?>>
                                     </div>
                                 </td>
                             </tr><?php $index += 1; ?><?php } ?>

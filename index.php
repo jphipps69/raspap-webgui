@@ -91,6 +91,21 @@ $theme_url = 'dist/css/' . $theme;
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<script>
+   $(document).ready(function () {         // when page is fully loaded
+        console.log('starting');
+        $('.net-connect').click(function(event) {
+           console.log('click');
+	   console.log(event.target.id);
+           $('#network_connect').val(event.target.id);
+           $('#wpa_conf_form').submit();
+        });
+   });
+</script>
+
   </head>
   <body>
 
