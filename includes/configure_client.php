@@ -51,7 +51,6 @@ function DisplayWPAConfig(){
 		}
 	}
 
-echo "<!-- before if -->";
 	if ( isset($_POST['client_settings']) && CSRFValidate() ) {
                 $current_network = "0";
                 if ( $_POST['network_connect']) {
@@ -83,7 +82,11 @@ echo "<!-- before if -->";
 			}
 
 			$ok = true;
+                        $x = 0;
 			foreach($tmp_networks as $ssid => $network) {
+                                if ($x == $current_network) {
+                                   $current_network_ssid = $ssid;
+                                }
 				if ($network['protocol'] === 'Open') {
 					fwrite($wpa_file, "network={".PHP_EOL);
 					fwrite($wpa_file, "\tssid=\"".$ssid."\"".PHP_EOL);
@@ -112,6 +115,7 @@ echo "<!-- before if -->";
 						$ok = false;
 					}
 				}
+ 				$x++;
 			}
 
 			if ($ok) {
@@ -123,7 +127,7 @@ echo "<!-- before if -->";
 						$networks = $tmp_networks;
 					        exec('sudo wpa_cli select_network '.$current_network, $reconfigure_out, $reconfigure_return );
 					        if ($reconfigure_return == 0) {
-						    $status->addMessage('Wifi network '.$current_network.' selected successfully', 'success');
+						    $status->addMessage('Wifi connected to  '.$current_network_ssid, 'success');
                                                 }
 					} else {
 						$status->addMessage('Wifi settings updated but cannot restart (cannon execute "wpa_cli reconfigure")', 'danger');
@@ -190,7 +194,7 @@ echo "<!-- before if -->";
                     <h4>Client settings for interface <?php echo RASPI_WIFI_CLIENT_INTERFACE ?></h4>
 
                     <div class="btn-group btn-block">
-                        <a href=".?<?php echo $_SERVER['QUERY_STRING']; ?>" style="padding:10px;float: right;display: block;position: relative;margin-top: -55px;" class="col-md-2 btn btn-info" id="update">Rescan</a>
+                        <a href=".?<?php echo $_SERVER['QUERY_STRING']; ?>" style="padding:10px;float: right;display: block;position: relative;margin-top: -40px;margin-bottom: 10px" class="col-md-2 btn btn-info" id="update">Rescan</a>
                     </div>
 
                     <form method="post" action="?page=wpa_conf" id="wpa_conf_form" name="client">
